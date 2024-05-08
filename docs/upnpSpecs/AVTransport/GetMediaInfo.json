@@ -1,0 +1,12 @@
+{
+    "NrTracks": "3",
+    "MediaDuration": "00:00:00",
+    "CurrentURI": "https://dispatcher.rndfnk.com/swr/swr3/live/aac/96/stream.aac?aggregator=tunein",
+    "CurrentURIMetaData": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<DIDL-Lite xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:upnp=\"urn:schemas-upnp-org:metadata-1-0/upnp/\" xmlns:song=\"www.wiimu.com/song/\" xmlns=\"urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/\">\r\n<upnp:class>object.item.audioItem.musicTrack</upnp:class>\r\n<item id=\"\">\r\n<song:isLive>1</song:isLive>\r\n<song:subid></song:subid>\r\n<song:description></song:description>\r\n<song:skiplimit>0</song:skiplimit>\r\n<song:id>s24896</song:id>\r\n<song:like>0</song:like>\r\n<song:singerid></song:singerid>\r\n<song:albumid></song:albumid>\r\n<song:quality>0</song:quality>\r\n<song:actualQuality></song:actualQuality>\r\n<song:atmos>0</song:atmos>\r\n<song:rate_hz>48000</song:rate_hz>\r\n<song:format_s>16</song:format_s>\r\n<song:bitrate>48</song:bitrate>\r\n<song:guibehavior></song:guibehavior>\r\n<song:soundScapeType></song:soundScapeType>\r\n<song:playCase></song:playCase>\r\n<song:originSource>newTuneIn</song:originSource>\r\n<res protocolInfo=\"http-get:*:audio/mpeg:DLNA.ORG_PN=MP3;DLNA.ORG_OP=01;\" duration=\"00:00:00\"></res>\r\n<dc:subtitle>David Guetta &amp; Sia - Floating through space</dc:subtitle>\r\n<dc:title>SWR3</dc:title>\r\n<upnp:artist></upnp:artist>\r\n<upnp:album></upnp:album>\r\n<upnp:albumArtURI>http://cdn-albums.tunein.com/gn/RLVRT1LV8Ng.jpg</upnp:albumArtURI>\r\n</item>\r\n</DIDL-Lite>\r\n",
+    "NextURI": "",
+    "NextURIMetaData": "",
+    "TrackSource": "newTuneIn",
+    "PlayMedium": "RADIO-NETWORK",
+    "RecordMedium": "NOT_IMPLEMENTED",
+    "WriteStatus": "NOT_IMPLEMENTED"
+}

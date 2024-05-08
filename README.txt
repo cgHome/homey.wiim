@@ -1,0 +1,1 @@
+WiiM unveils a new era of home audio – an ultimate wireless sound system that paints your home with stunning sound, room by room, through a whole-house WiFi network.

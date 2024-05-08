@@ -1,0 +1,45 @@
+{
+  "name": {
+    "en": "WiiM Player"
+  },
+  "class": "speaker",
+  "capabilities": [
+    "speaker_playing",
+    "speaker_prev",
+    "speaker_next",
+    "speaker_artist",
+    "speaker_album",
+    "speaker_track",
+    "speaker_duration",
+    "speaker_position",
+    "speaker_shuffle",
+    "speaker_repeat",
+    "volume_set",
+    "volume_mute"
+  ],
+  "platforms": [
+    "local"
+  ],
+  "connectivity": [
+    "lan"
+  ],
+  "images": {
+    "small": "{{driverAssetsPath}}/images/small.jpg",
+    "large": "{{driverAssetsPath}}/images/large.jpg",
+    "xlarge": "{{driverAssetsPath}}/images/xlarge.jpg"
+  },
+  "discovery": "player",
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

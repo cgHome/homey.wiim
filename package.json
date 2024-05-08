@@ -1,0 +1,19 @@
+{
+  "name": "org.cflat-inc.wiim",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts --ignore-path .gitignore .",
+    "upd:myHomey": "npm uninstall my-homey && npm install github:cgHome/homey.my-homey#master"
+  },
+  "devDependencies": {
+    "@types/homey": "npm:homey-apps-sdk-v3-types@^0.3.5",
+    "eslint": "^9.1.1",
+    "eslint-config-athom": "^3.1.3"
+  },
+  "dependencies": {
+    "my-homey": "github:cgHome/homey.myHomey#master",
+    "upnp-client-ts": "^1.1.1",
+    "xml-js": "^1.6.11"
+  }
+}

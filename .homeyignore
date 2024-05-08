@@ -1,0 +1,8 @@
+.vscode/
+.eslintrc.json
+.git/
+.gitignore
+.gitattributes
+docs/
+package-lock.json
+jsconfig.json

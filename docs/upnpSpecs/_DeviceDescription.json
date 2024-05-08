@@ -1,0 +1,72 @@
+{
+    "icons": [
+        {
+            "mimetype": "image/png",
+            "width": "48",
+            "height": "48",
+            "depth": "24",
+            "url": "http://192.168.50.56:49152/upnp/grender-48x48.png"
+        },
+        {
+            "mimetype": "image/png",
+            "width": "120",
+            "height": "120",
+            "depth": "24",
+            "url": "http://192.168.50.56:49152/upnp/grender-120x120.png"
+        },
+        {
+            "mimetype": "image/jpeg",
+            "width": "48",
+            "height": "48",
+            "depth": "24",
+            "url": "http://192.168.50.56:49152/upnp/grender-48x48.jpg"
+        },
+        {
+            "mimetype": "image/jpeg",
+            "width": "120",
+            "height": "120",
+            "depth": "24",
+            "url": "http://192.168.50.56:49152/upnp/grender-120x120.jpg"
+        }
+    ],
+    "services": {
+        "urn:upnp-org:serviceId:AVTransport": {
+            "serviceType": "urn:schemas-upnp-org:service:AVTransport:1",
+            "SCPDURL": "http://192.168.50.56:49152/upnp/rendertransportSCPD.xml",
+            "controlURL": "http://192.168.50.56:49152/upnp/control/rendertransport1",
+            "eventSubURL": "http://192.168.50.56:49152/upnp/event/rendertransport1"
+        },
+        "urn:upnp-org:serviceId:ConnectionManager": {
+            "serviceType": "urn:schemas-upnp-org:service:ConnectionManager:1",
+            "SCPDURL": "http://192.168.50.56:49152/upnp/renderconnmgrSCPD.xml",
+            "controlURL": "http://192.168.50.56:49152/upnp/control/renderconnmgr1",
+            "eventSubURL": "http://192.168.50.56:49152/upnp/event/renderconnmgr1"
+        },
+        "urn:upnp-org:serviceId:RenderingControl": {
+            "serviceType": "urn:schemas-upnp-org:service:RenderingControl:1",
+            "SCPDURL": "http://192.168.50.56:49152/upnp/rendercontrolSCPD.xml",
+            "controlURL": "http://192.168.50.56:49152/upnp/control/rendercontrol1",
+            "eventSubURL": "http://192.168.50.56:49152/upnp/event/rendercontrol1"
+        },
+        "urn:wiimu-com:serviceId:PlayQueue": {
+            "serviceType": "urn:schemas-wiimu-com:service:PlayQueue:1",
+            "SCPDURL": "http://192.168.50.56:49152/upnp/PlayQueueSCPD.xml",
+            "controlURL": "http://192.168.50.56:49152/upnp/control/PlayQueue1",
+            "eventSubURL": "http://192.168.50.56:49152/upnp/event/PlayQueue1"
+        },
+        "urn:tencent-com:serviceId:QPlay": {
+            "serviceType": "urn:schemas-tencent-com:service:QPlay:1",
+            "SCPDURL": "http://192.168.50.56:49152/upnp/QPlaySCPD.xml",
+            "controlURL": "http://192.168.50.56:49152/upnp/control/QPlay1",
+            "eventSubURL": "http://192.168.50.56:49152/upnp/event/QPlay1"
+        }
+    },
+    "deviceType": "urn:schemas-upnp-org:device:MediaRenderer:1",
+    "friendlyName": "Büro Audio",
+    "manufacturer": "Linkplay Technology Inc.",
+    "manufacturerURL": "https://wiimhome.com",
+    "modelName": "WiiM Pro Receiver",
+    "modelNumber": "V01-Apr 16 2024\r\n",
+    "modelDescription": "WiiM Pro Receiver",
+    "UDN": "uuid:FF98F09C-74E9-46A5-07FF-155EFF98F09C"
+}

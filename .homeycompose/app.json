@@ -1,0 +1,36 @@
+{
+  "id": "org.cflat-inc.wiim",
+  "version": "1.0.0",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "WiiM"
+  },
+  "description": {
+    "en": "Redefining Home Audio: Affordable, Innovative, Hi-Res Sound"
+  },
+  "category": [
+    "music"
+  ],
+  "permissions": [
+    "homey:app:nl.nielsdeklerk.log"
+  ],
+  "brandColor": "#24646c",
+  "images": {
+    "small": "/assets/images/small.jpg",
+    "large": "/assets/images/large.jpg",
+    "xlarge": "/assets/images/xlarge.jpg"
+  },
+  "author": {
+    "name": "Chris Gross",
+    "email": "cghome@gmx.net"
+  },
+  "homeyCommunityTopicId": 109539,
+  "support": "https://community.athom.com/t/109539",
+  "bugs": {
+    "url": "https://github.com/cgHome/homey.wiim/issues"
+  }
+}

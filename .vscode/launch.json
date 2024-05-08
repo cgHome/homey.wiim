@@ -1,0 +1,38 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "HP23:local:Attach",
+            "type": "node",
+            "request": "attach",
+            "port": 9229,
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "/app/",
+        },
+        {
+            "name": "HP23:remote:Attach",
+            "type": "node",
+            "request": "attach",
+            "address": "192.168.50.11",
+            "port": 9229,
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "/app/",
+        },
+        {
+            "name": "HP16:remote:Attach",
+            "type": "node",
+            "request": "attach",
+            "address": "192.168.50.10",
+            "port": 9229,
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "/",
+        },
+        {
+            "name": "Attach: chrome",
+            "type": "chrome",
+            "request": "attach",
+            "port": 9222,
+            "webRoot": "${workspaceFolder}"
+        }
+    ]
+}

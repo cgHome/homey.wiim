@@ -1,6 +1,6 @@
 {
   "name": {
-    "en": "WiiM Player"
+    "en": "Audio Player"
   },
   "class": "speaker",
   "capabilities": [
@@ -15,8 +15,41 @@
     "speaker_shuffle",
     "speaker_repeat",
     "volume_set",
-    "volume_mute"
+    "volume_mute",
+    "button.off",
+    "button.preset1",
+    "button.preset2",
+    "button.preset3",
+    "button.preset4"
   ],
+  "capabilitiesOptions": {
+    "button.off": {
+      "title": {
+        "en": "Player Off",
+        "de": "Player Aus"
+      }
+    },
+    "button.preset1": {
+      "title": {
+        "en": "Preset 1"
+      }
+    },
+    "button.preset2": {
+      "title": {
+        "en": "Preset 2"
+      }
+    },
+    "button.preset3": {
+      "title": {
+        "en": "Preset 3"
+      }
+    },
+    "button.preset4": {
+      "title": {
+        "en": "Preset 4"
+      }
+    }
+  },
   "platforms": [
     "local"
   ],

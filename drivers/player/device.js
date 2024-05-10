@@ -17,8 +17,6 @@ module.exports = class PlayerDevice extends MyHttpDevice {
   async onInit() {
     super.onInit();
 
-    this.registerFlows();
-
     this.registerCapabilityListener('speaker_playing', this.onCapabilitySpeakerPlaying.bind(this));
     this.registerCapabilityListener('speaker_prev', this.onCapabilitySpeakerPrev.bind(this));
     this.registerCapabilityListener('speaker_next', this.onCapabilitySpeakerNext.bind(this));
@@ -26,6 +24,11 @@ module.exports = class PlayerDevice extends MyHttpDevice {
     this.registerCapabilityListener('speaker_repeat', this.onCapabilitySpeakerRepeat.bind(this));
     this.registerCapabilityListener('volume_set', this.onCapabilityVolumeSet.bind(this));
     this.registerCapabilityListener('volume_mute', this.onCapabilityVolumeMute.bind(this));
+    this.registerCapabilityListener('button.off', this.onCapabilityPlayerOff.bind(this));
+    this.registerCapabilityListener('button.preset1', this.onCapabilityPreset.bind(this, '1'));
+    this.registerCapabilityListener('button.preset2', this.onCapabilityPreset.bind(this, '2'));
+    this.registerCapabilityListener('button.preset3', this.onCapabilityPreset.bind(this, '3'));
+    this.registerCapabilityListener('button.preset4', this.onCapabilityPreset.bind(this, '4'));
 
     this.registerDeviceListener('GetInfoEx', this.onDeviceGetInfoEx.bind(this));
 
@@ -48,10 +51,6 @@ module.exports = class PlayerDevice extends MyHttpDevice {
     if (process.env.DEBUG === '1') {
       super.logDebug(msg);
     }
-  }
-
-  registerFlows() {
-    this.logDebug('registerFlows()')
   }
 
   // MyHttpDevice
@@ -82,6 +81,10 @@ module.exports = class PlayerDevice extends MyHttpDevice {
         const value = await this.#upnpClient.callAction('AVTransport', 'GetInfoEx', { InstanceID: 0 })
         this.deviceDataReceived('GetInfoEx', value)
       })
+    // .then(async () => {
+    //   const value = await this.#upnpClient.callAction('PlayQueue', 'GetKeyMapping', { InstanceID: 0 })
+    //   this.deviceDataReceived('GetKeyMapping', value)
+    // })
   }
 
   //
@@ -95,7 +98,6 @@ module.exports = class PlayerDevice extends MyHttpDevice {
       return this.sendCommand('setPlayerCmd:resume')
         .catch((error) => this.logError(`onCapabilitySpeakerPlaying() > sendCommand > ${error}`))
     } else {
-      // return this.sendCommand('setPlayerCmd:stop')
       return this.sendCommand('setPlayerCmd:pause')
         .catch((error) => this.logError(`onCapabilitySpeakerPlaying() > sendCommand > ${error}`))
     }
@@ -115,21 +117,17 @@ module.exports = class PlayerDevice extends MyHttpDevice {
       .catch((error) => this.logError(`onCapabilitySpeakerNext() > sendCommand > ${error}`))
   }
 
-  onCapabilitySpeakerShuffle(shuffle, opts) {
+  onCapabilitySpeakerShuffle(value, opts) {
     this.logDebug(`onCapabilitySpeakerShuffle() > ${value} opts: ${JSON.stringify(opts)}`);
 
-    const loopMode = this.#convertToLoopMode(shuffle, this.getCapabilityValue('speaker_repeat'));
-
-    return this.sendCommand(`setPlayerCmd:loopmode:${loopMode}`)
+    return this.sendCommand(`setPlayerCmd:loopmode:${this.#convertToLoopMode(value, this.getCapabilityValue('speaker_repeat'))}`)
       .catch((error) => this.logError(`onCapabilitySpeakerShuffle() > sendCommand > ${error}`))
   }
 
-  onCapabilitySpeakerRepeat(repeat, opts) {
+  onCapabilitySpeakerRepeat(value, opts) {
     this.logDebug(`onCapabilitySpeakerRepeat() > ${value} opts: ${JSON.stringify(opts)}`)
 
-    const loopMode = this.#convertToLoopMode(this.getCapabilityValue('speaker_shuffle'), repeat);
-
-    return this.sendCommand(`setPlayerCmd:loopmode:${loopMode}`)
+    return this.sendCommand(`setPlayerCmd:loopmode:${this.#convertToLoopMode(this.getCapabilityValue('speaker_shuffle'), value)}`)
       .catch((error) => this.logError(`onCapabilitySpeakerRepeat() > sendCommand > ${error}`))
   }
 
@@ -147,47 +145,35 @@ module.exports = class PlayerDevice extends MyHttpDevice {
       .catch((error) => this.logError(`onCapabilityVolumeMute() > sendCommand > ${error}`))
   }
 
+  onCapabilityPlayerOff() {
+    this.logDebug(`onCapabilityPlayerOff()`)
+
+    return this.sendCommand(`setPlayerCmd:stop`)
+      .catch((error) => this.logError(`onCapabilityPlayerOff() > sendCommand > ${error}`))
+  }
+
+  onCapabilityPreset(value) {
+    this.logDebug(`onCapabilityPreset() > ${value}`)
+
+    return this.sendCommand(`MCUKeyShortClick:${value}`)
+      .catch((error) => this.logError(`onCapabilityPreset() > sendCommand > ${error}`))
+  }
+
   //
   // Device handling
   //
 
   onDeviceGetInfoEx(value) {
-    const data = { ...value }
     try {
-      data.TrackMetaData = this.#convertXmlToJSON(data.TrackMetaData)['DIDL-Lite'].item;
+      const data = { ...value }
 
-      this.logDebug(`onDeviceGetInfoEx() > ${JSON.stringify(data)}`)
-
-      const uri = data.TrackMetaData['upnp:albumArtURI']
-      if (this.#currentAlbumURI !== uri) {
-        this.logDebug(`onDeviceGetInfoEx() > AlbumArtImage > ${uri}`)
-
-        this.#albumArtImage.setStream((stream) => {
-          const func = uri.startsWith('https://') ? https.get : http.get
-          func(uri, (resp) => { resp.pipe(stream) })
-            .on('error', (err) => { throw err });
-        })
-
-        this.#albumArtImage.update()
-          .catch((err) => this.logError(`onDeviceGetInfoEx() > AlbumArtImage > ${err.message}`));
-
-        this.#currentAlbumURI = uri
+      if (data.TrackMetaData.length > 0) {
+        data.TrackMetaData = this.#convertXmlToJSON(data.TrackMetaData)['DIDL-Lite'].item
       }
+      this.logDebug(`onDeviceGetInfoEx() > ${JSON.stringify(data)}`)
 
       const playing = data.CurrentTransportState === "PLAYING"
       this.setCapabilityValue('speaker_playing', playing)
-
-      const artist = data.TrackMetaData['dc:subtitle'] ? data.TrackMetaData['dc:title'] : `${data.TrackMetaData['upnp:artist']}, ${data.TrackMetaData['upnp:album']}`
-      this.setCapabilityValue('speaker_artist', artist)
-
-      const album = data.TrackMetaData['dc:subtitle'] ? data.TrackMetaData['dc:title'] : data.TrackMetaData['upnp:album']
-      this.setCapabilityValue('speaker_album', album)
-
-      const track = data.TrackMetaData['dc:subtitle'] ? data.TrackMetaData['dc:subtitle'] : data.TrackMetaData['dc:title']
-      this.setCapabilityValue('speaker_track', track)
-
-      this.setCapabilityValue('speaker_duration', this.#convertTimeToNumber(data['TrackDuration']))
-      this.setCapabilityValue('speaker_position', this.#convertTimeToNumber(data['RelTime']))
 
       switch (data['LoopMode']) {
         case "0":
@@ -219,12 +205,41 @@ module.exports = class PlayerDevice extends MyHttpDevice {
           break;
       }
 
+      this.setCapabilityValue('speaker_duration', this.#convertTimeToNumber(data['TrackDuration']))
+      this.setCapabilityValue('speaker_position', this.#convertTimeToNumber(data['RelTime']))
+
       this.setCapabilityValue('volume_set', data['CurrentVolume'] / 100)
       this.setCapabilityValue('volume_mute', data['CurrentMute'] === '1' ? true : false)
 
+      if (typeof data.TrackMetaData === 'object') {
+        const uri = data.TrackMetaData['upnp:albumArtURI']
+        if (this.#currentAlbumURI !== uri) {
+          this.logDebug(`onDeviceGetInfoEx() > AlbumArtImage > ${uri}`)
+
+          this.#albumArtImage.setStream((stream) => {
+            const func = uri.startsWith('https://') ? https.get : http.get
+            func(uri, (resp) => { resp.pipe(stream) })
+              .on('error', (err) => { throw err });
+          })
+
+          this.#albumArtImage.update()
+            .catch((err) => this.logError(`onDeviceGetInfoEx() > AlbumArtImage > ${err.message}`));
+
+          this.#currentAlbumURI = uri
+        }
+
+        const artist = data.TrackMetaData['dc:subtitle'] ? data.TrackMetaData['dc:title'] : `${data.TrackMetaData['upnp:artist']}, ${data.TrackMetaData['upnp:album']}`
+        this.setCapabilityValue('speaker_artist', String(artist))
+
+        const album = data.TrackMetaData['dc:subtitle'] ? data.TrackMetaData['dc:title'] : data.TrackMetaData['upnp:album']
+        this.setCapabilityValue('speaker_album', String(album))
+
+        const track = data.TrackMetaData['dc:subtitle'] ? data.TrackMetaData['dc:subtitle'] : data.TrackMetaData['dc:title']
+        this.setCapabilityValue('speaker_track', String(track))
+      }
+
     } catch (err) {
-      // FIXME: See: WiiM Support ticket #503478
-      if (process.env.DEBUG === '1') this.logError(`onDeviceGetInfoEx() > ${err.message} > ${JSON.stringify(value)}`)
+      this.logError(`onDeviceGetInfoEx() > ${err.message} > ${JSON.stringify(value)}`)
     }
   }
 

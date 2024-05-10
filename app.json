@@ -34,10 +34,114 @@
   "bugs": {
     "url": "https://github.com/cgHome/homey.wiim/issues"
   },
+  "flow": {
+    "actions": [
+      {
+        "id": "switch_off",
+        "highlight": true,
+        "title": {
+          "en": "Switch off",
+          "de": "Ausschalten"
+        },
+        "titleFormatted": {
+          "en": "Switch off the player",
+          "de": "Player ausschalten"
+        },
+        "hint": {
+          "en": "Use this card to switch off the player",
+          "de": "Verwenden Sie diese Karte, um den Player auszuschalten"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=player"
+          }
+        ]
+      },
+      {
+        "id": "call_preset",
+        "highlight": true,
+        "title": {
+          "en": "Call preset",
+          "de": "Preset aufrufen"
+        },
+        "titleFormatted": {
+          "en": "Call up preset [[preset_number]]",
+          "de": "Preset [[preset_number]] aufrufen"
+        },
+        "hint": {
+          "en": "Use this card to call up a preset",
+          "de": "Verwenden Sie diese Karte, um einen Preset aufzurufen"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=player"
+          },
+          {
+            "name": "preset_number",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "1",
+                "label": "1"
+              },
+              {
+                "id": "2",
+                "label": "2"
+              },
+              {
+                "id": "3",
+                "label": "3"
+              },
+              {
+                "id": "4",
+                "label": "4"
+              },
+              {
+                "id": "5",
+                "label": "5"
+              },
+              {
+                "id": "6",
+                "label": "6"
+              },
+              {
+                "id": "7",
+                "label": "7"
+              },
+              {
+                "id": "8",
+                "label": "8"
+              },
+              {
+                "id": "9",
+                "label": "9"
+              },
+              {
+                "id": "10",
+                "label": "10"
+              },
+              {
+                "id": "11",
+                "label": "11"
+              },
+              {
+                "id": "12",
+                "label": "12"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
   "drivers": [
     {
       "name": {
-        "en": "WiiM Player"
+        "en": "Audio Player"
       },
       "class": "speaker",
       "capabilities": [
@@ -52,8 +156,41 @@
         "speaker_shuffle",
         "speaker_repeat",
         "volume_set",
-        "volume_mute"
+        "volume_mute",
+        "button.off",
+        "button.preset1",
+        "button.preset2",
+        "button.preset3",
+        "button.preset4"
       ],
+      "capabilitiesOptions": {
+        "button.off": {
+          "title": {
+            "en": "Player Off",
+            "de": "Player Aus"
+          }
+        },
+        "button.preset1": {
+          "title": {
+            "en": "Preset 1"
+          }
+        },
+        "button.preset2": {
+          "title": {
+            "en": "Preset 2"
+          }
+        },
+        "button.preset3": {
+          "title": {
+            "en": "Preset 3"
+          }
+        },
+        "button.preset4": {
+          "title": {
+            "en": "Preset 4"
+          }
+        }
+      },
       "platforms": [
         "local"
       ],

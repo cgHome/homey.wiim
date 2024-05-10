@@ -4,11 +4,18 @@ const { MyDriver } = require('my-homey');
 
 module.exports = class PlayerDriver extends MyDriver {
 
-  /**
-   * onInit is called when the driver is initialized.
-   */
+  #actionSwitchOff
+  #actionCallPreset
+
   async onInit() {
     super.onInit();
+
+    this.#actionSwitchOff = this.homey.flow.getActionCard('switch_off');
+    this.#actionSwitchOff.registerRunListener((args, state) => args.device.onCapabilityPlayerOff())
+
+    this.#actionCallPreset = this.homey.flow.getActionCard('call_preset');
+    this.#actionCallPreset.registerRunListener((args, state) => args.device.onCapabilityPreset(args.preset_number))
+
   }
 
   // FIXME: simplelog-api on/off

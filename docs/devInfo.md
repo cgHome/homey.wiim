@@ -75,13 +75,3 @@
 - 
 
 ## Temp
-
-`mode` | Activates a combination of Shuffle and Repeat modes<br>
-
-- `0`: Shuffle disabled, Repeat enabled - loop
-- `1`: Shuffle disabled, Repeat enabled - loop once
-- `2`: Shuffle enabled, Repeat enabled - loop
-- `3`: Shuffle enabled, Repeat disabled
-- `4`: Shuffle disabled, Repeat disabled
-- `5`: Shuffle enabled, Repeat enabled - loop once
-

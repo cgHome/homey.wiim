@@ -11,7 +11,7 @@ const { MyHttpDevice } = require('my-homey');
 module.exports = class PlayerDevice extends MyHttpDevice {
 
   #upnpClient
-  #albumArtImage
+  #albumArtImage = null
   #currentAlbumURI = ''
 
   async onInit() {
@@ -211,23 +211,7 @@ module.exports = class PlayerDevice extends MyHttpDevice {
       this.setCapabilityValue('volume_set', data['CurrentVolume'] / 100)
       this.setCapabilityValue('volume_mute', data['CurrentMute'] === '1' ? true : false)
 
-      if (typeof data.TrackMetaData === 'object') {
-        const uri = data.TrackMetaData['upnp:albumArtURI']
-        if (this.#currentAlbumURI !== uri) {
-          this.logDebug(`onDeviceGetInfoEx() > AlbumArtImage > ${uri}`)
-
-          this.#albumArtImage.setStream((stream) => {
-            const func = uri.startsWith('https://') ? https.get : http.get
-            func(uri, (resp) => { resp.pipe(stream) })
-              .on('error', (err) => { throw err });
-          })
-
-          this.#albumArtImage.update()
-            .catch((err) => this.logError(`onDeviceGetInfoEx() > AlbumArtImage > ${err.message}`));
-
-          this.#currentAlbumURI = uri
-        }
-
+      if (data.CurrentTransportState !== 'NO_MEDIA_PRESENT' && typeof data.TrackMetaData === 'object') {
         const artist = data.TrackMetaData['dc:subtitle'] ? data.TrackMetaData['dc:title'] : `${data.TrackMetaData['upnp:artist']}, ${data.TrackMetaData['upnp:album']}`
         this.setCapabilityValue('speaker_artist', String(artist))
 
@@ -236,8 +220,33 @@ module.exports = class PlayerDevice extends MyHttpDevice {
 
         const track = data.TrackMetaData['dc:subtitle'] ? data.TrackMetaData['dc:subtitle'] : data.TrackMetaData['dc:title']
         this.setCapabilityValue('speaker_track', String(track))
-      }
 
+        if (this.#currentAlbumURI !== data.TrackMetaData['upnp:albumArtURI']) {
+          this.#currentAlbumURI = data.TrackMetaData['upnp:albumArtURI']
+          this.logDebug(`onDeviceGetInfoEx() > AlbumArtImage > ${this.#currentAlbumURI}`)
+
+          this.#albumArtImage.setStream((stream) => {
+            const func = this.#currentAlbumURI.startsWith('https://') ? https.get : http.get
+            func(this.#currentAlbumURI, (res) => { res.pipe(stream) })
+              .on('error', (err) => { throw err });
+          })
+          this.#albumArtImage.update()
+            .catch((err) => this.logError(`onDeviceGetInfoEx() > AlbumArtImage > ${err.message}`));
+        }
+      } else {
+        this.logDebug(`onDeviceGetInfoEx() > TrackMetaData doesn't exist`)
+
+        this.setCapabilityValue('speaker_artist', '')
+        this.setCapabilityValue('speaker_album', '')
+        this.setCapabilityValue('speaker_track', '')
+
+        if (this.#currentAlbumURI !== null) {
+          this.#currentAlbumURI = null
+          this.#albumArtImage.setUrl(this.#currentAlbumURI)
+          this.#albumArtImage.update()
+            .catch((err) => this.logError(`onDeviceGetInfoEx() > AlbumArtImage > ${err.message}`));
+        }
+      }
     } catch (err) {
       this.logError(`onDeviceGetInfoEx() > ${err.message} > ${JSON.stringify(value)}`)
     }

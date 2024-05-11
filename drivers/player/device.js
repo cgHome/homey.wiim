@@ -96,9 +96,11 @@ module.exports = class PlayerDevice extends MyHttpDevice {
 
     if (value) {
       return this.sendCommand('setPlayerCmd:resume')
+        .then(() => this.logNotice(`Play`))
         .catch((error) => this.logError(`onCapabilitySpeakerPlaying() > sendCommand > ${error}`))
     } else {
       return this.sendCommand('setPlayerCmd:pause')
+        .then(() => this.logNotice(`Pause`))
         .catch((error) => this.logError(`onCapabilitySpeakerPlaying() > sendCommand > ${error}`))
     }
   }
@@ -107,6 +109,7 @@ module.exports = class PlayerDevice extends MyHttpDevice {
     this.logDebug(`onCapabilitySpeakerPrev()`);
 
     return this.sendCommand('setPlayerCmd:prev')
+      .then(() => this.logNotice(`Prev`))
       .catch((error) => this.logError(`onCapabilitySpeakerPrev() > sendCommand > ${error}`))
   }
 
@@ -114,6 +117,7 @@ module.exports = class PlayerDevice extends MyHttpDevice {
     this.logDebug(`onCapabilitySpeakerNext()`);
 
     return this.sendCommand('setPlayerCmd:next')
+      .then(() => this.logNotice(`Next`))
       .catch((error) => this.logError(`onCapabilitySpeakerNext() > sendCommand > ${error}`))
   }
 
@@ -121,6 +125,7 @@ module.exports = class PlayerDevice extends MyHttpDevice {
     this.logDebug(`onCapabilitySpeakerShuffle() > ${value} opts: ${JSON.stringify(opts)}`);
 
     return this.sendCommand(`setPlayerCmd:loopmode:${this.#convertToLoopMode(value, this.getCapabilityValue('speaker_repeat'))}`)
+      .then(() => this.logNotice(`Shuffle`))
       .catch((error) => this.logError(`onCapabilitySpeakerShuffle() > sendCommand > ${error}`))
   }
 
@@ -128,6 +133,7 @@ module.exports = class PlayerDevice extends MyHttpDevice {
     this.logDebug(`onCapabilitySpeakerRepeat() > ${value} opts: ${JSON.stringify(opts)}`)
 
     return this.sendCommand(`setPlayerCmd:loopmode:${this.#convertToLoopMode(this.getCapabilityValue('speaker_shuffle'), value)}`)
+      .then(() => this.logNotice(`Repeat - ${value}`))
       .catch((error) => this.logError(`onCapabilitySpeakerRepeat() > sendCommand > ${error}`))
   }
 
@@ -135,6 +141,7 @@ module.exports = class PlayerDevice extends MyHttpDevice {
     this.logDebug(`onCapabilityVolumeSet() > ${value} opts: ${JSON.stringify(opts)}`)
 
     return this.sendCommand(`setPlayerCmd:vol:${value * 100}`)
+      .then(() => this.logNotice(`Volume - ${value * 100}`))
       .catch((error) => this.logError(`onCapabilityVolumeSet() > sendCommand > ${error}`))
   }
 
@@ -142,6 +149,7 @@ module.exports = class PlayerDevice extends MyHttpDevice {
     this.logDebug(`onCapabilityVolumeMute() > ${value} opts: ${JSON.stringify(opts)}`)
 
     return this.sendCommand(`setPlayerCmd:mute:${value ? '1' : '0'}`)
+      .then(() => this.logNotice(`Mute - ${value ? 'on' : 'off'}`))
       .catch((error) => this.logError(`onCapabilityVolumeMute() > sendCommand > ${error}`))
   }
 
@@ -149,6 +157,7 @@ module.exports = class PlayerDevice extends MyHttpDevice {
     this.logDebug(`onCapabilityPlayerOff()`)
 
     return this.sendCommand(`setPlayerCmd:stop`)
+      .then(() => this.logNotice(`Off`))
       .catch((error) => this.logError(`onCapabilityPlayerOff() > sendCommand > ${error}`))
   }
 
@@ -156,6 +165,7 @@ module.exports = class PlayerDevice extends MyHttpDevice {
     this.logDebug(`onCapabilityPreset() > ${value}`)
 
     return this.sendCommand(`MCUKeyShortClick:${value}`)
+      .then(() => this.logNotice(`Preset ${value}`))
       .catch((error) => this.logError(`onCapabilityPreset() > sendCommand > ${error}`))
   }
 

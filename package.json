@@ -1,6 +1,6 @@
 {
   "name": "org.cflat-inc.wiim",
-  "version": "0.9.9",
+  "version": "0.0.1",
   "main": "app.js",
   "scripts": {
     "lint": "eslint --ext .js,.ts --ignore-path .gitignore .",

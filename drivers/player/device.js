@@ -76,15 +76,9 @@ module.exports = class PlayerDevice extends MyHttpDevice {
   async getDeviceData(url) {
     this.logDebug(`getDeviceData()`);
 
-    return Promise.resolve({})
-      .then(async () => {
-        const value = await this.#upnpClient.callAction('AVTransport', 'GetInfoEx', { InstanceID: 0 })
-        this.deviceDataReceived('GetInfoEx', value)
-      })
-    // .then(async () => {
-    //   const value = await this.#upnpClient.callAction('PlayQueue', 'GetKeyMapping', { InstanceID: 0 })
-    //   this.deviceDataReceived('GetKeyMapping', value)
-    // })
+    return this.#upnpClient.callAction('AVTransport', 'GetInfoEx', { InstanceID: 0 })
+      .then((data) => this.deviceDataReceived('GetInfoEx', data))
+      .catch((error) => this.logError(`getDeviceData() > callAction > ${error}`))
   }
 
   //

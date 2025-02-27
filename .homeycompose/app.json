@@ -1,6 +1,6 @@
 {
   "id": "org.cflat-inc.wiim",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "platforms": [
@@ -16,7 +16,7 @@
     "music"
   ],
   "permissions": [
-    "homey:app:nl.nielsdeklerk.log"
+    "homey:app:org.cflat-inc.telemetryCollector"
   ],
   "brandColor": "#24646c",
   "images": {

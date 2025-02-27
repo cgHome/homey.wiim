@@ -4,30 +4,20 @@ const { MyDriver } = require('my-homey');
 
 module.exports = class PlayerDriver extends MyDriver {
 
-  #actionSwitchOff
-  #actionCallPreset
+  #actionSwitchOff;
+  #actionCallPreset;
 
   async onInit() {
     super.onInit();
 
     this.#actionSwitchOff = this.homey.flow.getActionCard('switch_off');
-    this.#actionSwitchOff.registerRunListener((args, state) => args.device.onCapabilityPlayerOff())
+    this.#actionSwitchOff.registerRunListener((args, state) => args.device.onCapabilityPlayerOff());
 
     this.#actionCallPreset = this.homey.flow.getActionCard('call_preset');
-    this.#actionCallPreset.registerRunListener((args, state) => args.device.onCapabilityPreset(args.preset_number))
-
-  }
-
-  // FIXME: simplelog-api on/off
-  logDebug(msg) {
-    if (process.env.DEBUG === '1') {
-      super.logDebug(msg);
-    }
+    this.#actionCallPreset.registerRunListener((args, state) => args.device.onCapabilityPreset(args.preset_number));
   }
 
   async onPairListDevices() {
-    this.logDebug('onPairListDevices()');
-
     const discoveryStrategy = this.getDiscoveryStrategy();
     const discoveryResults = await discoveryStrategy.getDiscoveryResults();
 

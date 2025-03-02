@@ -1,6 +1,0 @@
-{
-  "extends": "athom/homey-app",
-  "ignorePatterns": [
-    "/.homeybuild/*"
-  ]
-}

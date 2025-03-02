@@ -69,7 +69,10 @@ module.exports = class PlayerDevice extends MyHttpDevice {
   async getDeviceData(url) {
     return this.#upnpClient.callAction('AVTransport', 'GetInfoEx', { InstanceID: 0 })
       .then((data) => this.deviceDataReceived('GetInfoEx', data))
-      .catch((error) => this.logError(`getDeviceData() > callAction > ${error}`));
+      .catch((error) => {
+        // NOTE: I don't know why, but the error only occurs when the app is loaded (live). But everything works...
+        if (error.code !== 'EHOSTUNREACH') this.logError(`getDeviceData() > callAction > ${error}`);
+      });
   }
 
   //

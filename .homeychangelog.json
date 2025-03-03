@@ -4,5 +4,8 @@
   },
   "1.0.1": {
     "en": "some fix"
+  },
+  "1.1.0": {
+    "en": "TelemetryCollector-Api added"
   }
 }

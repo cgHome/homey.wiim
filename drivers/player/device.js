@@ -218,7 +218,7 @@ module.exports = class PlayerDevice extends MyHttpDevice {
 
           this.#albumArtImage.setStream((stream) => {
             const func = this.#currentAlbumURI.startsWith('https://') ? https.get : http.get;
-            func(this.#currentAlbumURI, (res) => {
+            func(this.#currentAlbumURI, { rejectUnauthorized: false }, (res) => {
               res.pipe(stream);
             })
               .on('error', (err) => {
